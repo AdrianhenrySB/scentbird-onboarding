@@ -1,0 +1,8 @@
+{
+  "name": "scentbird-onboarding-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scentbird IT New Hire Onboarding Portal",
+  "engines": { "node": ">=18" },
+  "type": "module"
+}

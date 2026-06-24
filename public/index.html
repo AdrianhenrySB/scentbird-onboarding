@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scentbird IT · New Hire Onboarding</title>
+<style>
+  :root {
+    --orange:       #B8733A;
+    --orange-light: #F5EDE3;
+    --orange-dark:  #8F5526;
+    --cream:        #F5EEE7;
+    --cream-dark:   #EDE4D8;
+    --black:        #111111;
+    --near-black:   #1C1C1C;
+    --gray-dark:    #3D3D3D;
+    --gray-mid:     #666666;
+    --gray-light:   #999999;
+    --gray-border:  #E0D8D0;
+    --gray-bg:      #F7F3EF;
+    --white:        #FFFFFF;
+    --green:        #2D7A4F;
+    --green-light:  #E8F5EE;
+    --green-check:  #4CAF7D;
+    --red:          #C0392B;
+    --red-light:    #FDECEA;
+    --blue:         #2563EB;
+    --blue-light:   #EFF6FF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--gray-bg);
+    color: var(--black);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  .admin-bar {
+    background: var(--near-black);
+    height: 38px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 2px;
+    overflow-x: auto;
+  }
+  .admin-tab {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 14px;
+    height: 38px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    white-space: nowrap;
+    transition: color 0.15s;
+    text-transform: uppercase;
+  }
+  .admin-tab:hover { color: rgba(255,255,255,0.75); }
+  .admin-tab.active { background: var(--orange); color: white; border-radius: 3px; }
+  .admin-spacer { flex: 1; }
+  .admin-login {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 14px; height: 28px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+    color: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .navbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-border);
+    height: 58px;
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    margin-right: 40px;
+    flex-shrink: 0;
+  }
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: var(--near-black);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .logo-mark img { width: 26px; height: 26px; object-fit: contain; filter: invert(1); }
+  .logo-text { line-height: 1; }
+  .logo-name { font-size: 14px; font-weight: 800; color: var(--black); letter-spacing: -0.3px; }
+  .logo-dept { font-size: 10px; font-weight: 600; color: var(--orange); letter-spacing: 0.5px; text-transform: uppercase; }
+  .nav-links { display: flex; align-items: center; flex: 1; }
+  .nav-link {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 16px; height: 58px;
+    font-size: 13px; font-weight: 500;
+    color: var(--gray-mid);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none; background: transparent;
+    white-space: nowrap;
+  }
+  .nav-link:hover { color: var(--black); }
+  .nav-link.active { color: var(--black); border-bottom: 2px solid var(--orange); font-weight: 600; }
+  .nav-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .nav-channel {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--cream);
+    border: 1px solid var(--gray-border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px; font-weight: 600; color: var(--gray-dark);
+    cursor: pointer;
+  }
+  .nav-channel .hash { color: var(--orange); font-weight: 800; }
+
+  .hero {
+    background: var(--cream);
+    border-bottom: 1px solid var(--cream-dark);
+    padding: 52px 28px 48px;
+    text-align: center;
+  }
+  .hero-icon-wrap {
+    width: 56px; height: 56px;
+    border: 2px solid var(--green-check);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+    position: relative;
+  }
+  .hero-icon-wrap.pending { border-color: var(--orange); }
+  .hero-icon-wrap svg { width: 24px; height: 24px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 14px;
+  }
+  .hero-badge::before { content: '✶'; font-size: 10px; }
+  .hero-title { font-size: 32px; font-weight: 800; color: var(--black); margin-bottom: 12px; line-height: 1.2; letter-spacing: -0.5px; }
+  .hero-sub { font-size: 14px; color: var(--gray-mid); max-width: 440px; margin: 0 auto; line-height: 1.6; }
+
+  .page { max-width: 1060px; margin: 0 auto; padding: 32px 28px 80px; }
+
+  .form-card {
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .form-card-header {
+    padding: 18px 24px 14px;
+    border-bottom: 1px solid var(--gray-border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .form-card-icon {
+    width: 34px; height: 34px;
+    border: 1.5px solid var(--gray-border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .form-card-title { font-size: 14px; font-weight: 700; color: var(--black); }
+  .form-card-desc { font-size: 12px; color: var(--gray-mid); margin-top: 1px; }
+  .form-card-body { padding: 20px 24px; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .field-label { font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--gray-dark); text-transform: uppercase; }
+  .field-label .req { color: var(--red); margin-left: 2px; }
+
+  input[type="text"], input[type="email"], input[type="date"], select, textarea {
+    border: 1px solid var(--gray-border);
+    border-radius: 5px;
+    padding: 9px 11px;
+    font-size: 13px;
+    color: var(--black);
+    background: var(--white);
+    width: 100%; outline: none;
+    font-family: inherit;
+    transition: border-color 0.12s, box-shadow 0.12s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(184,115,58,0.12);
+  }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23999' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+    padding-right: 28px;
+    cursor: pointer;
+  }
+  .field-note { font-size: 11px; color: var(--gray-light); margin-bottom: 16px; }
+
+  .priority-row { display: flex; gap: 6px; }
+  .priority-opt {
+    flex: 1; display: flex; align-items: center; gap: 7px;
+    padding: 9px 11px; border: 1px solid var(--gray-border);
+    border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 600;
+    color: var(--gray-mid); transition: all 0.12s; user-select: none;
+  }
+  .priority-opt:hover { border-color: var(--orange); color: var(--orange); }
+  .priority-opt.sel-standard { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .priority-opt.sel-urgent   { border-color: #D4860A; background: #FEF3C7; color: #92400E; }
+  .priority-opt.sel-critical { border-color: var(--red); background: var(--red-light); color: var(--red); }
+
+  .emp-banner {
+    background: var(--cream);
+    border: 1px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .emp-avatar {
+    width: 44px; height: 44px;
+    background: var(--near-black);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0; color: white;
+    font-weight: 800; font-style: italic;
+  }
+  .emp-name { font-size: 18px; font-weight: 800; color: var(--black); margin-bottom: 2px; }
+  .emp-sub  { font-size: 13px; color: var(--gray-mid); margin-bottom: 8px; }
+  .emp-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .emp-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--white); border: 1px solid var(--gray-border);
+    color: var(--gray-dark); border-radius: 4px;
+    padding: 3px 9px; font-size: 11px; font-weight: 600;
+  }
+  .emp-tag.highlight { background: var(--orange); border-color: var(--orange); color: white; }
+  .locked-badge {
+    margin-left: auto; flex-shrink: 0;
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 700; color: var(--gray-light);
+    background: var(--white); border: 1px solid var(--gray-border);
+    border-radius: 4px; padding: 4px 10px;
+  }
+
+  .cat-label {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--gray-light);
+    margin: 18px 0 8px; display: flex; align-items: center; gap: 10px;
+  }
+  .cat-label::after { content: ''; flex: 1; height: 1px; background: var(--gray-border); }
+  .cat-label:first-child { margin-top: 0; }
+
+  .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 6px; }
+  .app-chip {
+    display: flex; align-items: center; gap: 9px;
+    padding: 10px 11px;
+    border: 1px solid var(--gray-border);
+    border-radius: 6px;
+    cursor: pointer; user-select: none;
+    background: var(--white);
+    transition: border-color 0.1s, background 0.1s;
+    position: relative;
+  }
+  .app-chip:hover { border-color: var(--orange); background: var(--orange-light); }
+  .app-chip.selected { border-color: var(--orange); background: var(--orange-light); }
+  .app-emoji { font-size: 16px; flex-shrink: 0; width: 22px; height: 22px; text-align: center; display:flex; align-items:center; justify-content:center; }
+  .app-emoji img { width: 20px; height: 20px; object-fit: contain; display: block; border-radius: 3px; }
+  .app-label { font-size: 12px; font-weight: 500; color: var(--gray-dark); flex: 1; min-width: 0; }
+  .app-chip.selected .app-label { color: var(--orange-dark); font-weight: 700; }
+  .app-check-box {
+    width: 16px; height: 16px; flex-shrink: 0;
+    border: 1.5px solid var(--gray-border);
+    border-radius: 3px;
+    background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.1s;
+  }
+  .app-chip.selected .app-check-box { background: var(--orange); border-color: var(--orange); }
+  .app-check-box svg { display: none; }
+  .app-chip.selected .app-check-box svg { display: block; }
+
+  .hw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; }
+  .hw-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 16px 10px;
+    border: 1px solid var(--gray-border); border-radius: 6px;
+    cursor: pointer; user-select: none; text-align: center;
+    background: var(--white); transition: all 0.1s; position: relative;
+  }
+  .hw-chip:hover { border-color: var(--orange); background: var(--orange-light); }
+  .hw-chip.selected { border-color: var(--orange); background: var(--orange-light); }
+  .hw-emoji { font-size: 24px; }
+  .hw-label { font-size: 11px; font-weight: 600; color: var(--gray-mid); }
+  .hw-chip.selected .hw-label { color: var(--orange-dark); font-weight: 700; }
+  .hw-check {
+    position: absolute; top: 6px; right: 6px;
+    width: 14px; height: 14px;
+    border: 1.5px solid var(--gray-border); border-radius: 3px;
+    background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.1s;
+  }
+  .hw-chip.selected .hw-check { background: var(--orange); border-color: var(--orange); }
+  .hw-check svg { display: none; }
+  .hw-chip.selected .hw-check svg { display: block; }
+
+  .count-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--orange); color: white; border-radius: 100px;
+    font-size: 10px; font-weight: 800; min-width: 18px; height: 18px;
+    padding: 0 5px; margin-left: 4px; vertical-align: middle;
+  }
+
+  .step-tabs {
+    display: flex; border-bottom: 1px solid var(--gray-border);
+    background: var(--white); margin-bottom: 24px;
+    border-radius: 8px 8px 0 0; overflow: hidden;
+    border: 1px solid var(--gray-border);
+  }
+  .step-tab {
+    flex: 1; padding: 13px 16px;
+    font-size: 12px; font-weight: 700; text-align: center;
+    color: var(--gray-light); cursor: pointer; border: none;
+    background: transparent; transition: all 0.12s;
+    border-right: 1px solid var(--gray-border);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .step-tab:last-child { border-right: none; }
+  .step-tab:hover { color: var(--gray-dark); background: var(--gray-bg); }
+  .step-tab.active { color: var(--orange-dark); background: var(--orange-light); font-weight: 800; }
+  .step-tab.done { color: var(--green); }
+  .step-tab .tab-num {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; flex-shrink: 0;
+  }
+  .step-tab.done .tab-num { background: var(--green); border-color: var(--green); color: white; font-size: 9px; }
+
+  .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 20px; border-radius: 5px;
+    font-size: 13px; font-weight: 700; cursor: pointer; border: none;
+    font-family: inherit; transition: all 0.12s; white-space: nowrap;
+  }
+  .btn-primary { background: var(--orange); color: white; }
+  .btn-primary:hover { background: var(--orange-dark); }
+  .btn-ghost { background: transparent; color: var(--gray-mid); border: 1px solid var(--gray-border); }
+  .btn-ghost:hover { color: var(--black); border-color: var(--gray-dark); }
+  .btn-lg { padding: 12px 28px; font-size: 14px; }
+  .btn-success { background: var(--green); color: white; }
+  .btn-success:hover { background: #236040; }
+
+  .info-strip {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--cream); border: 1px solid var(--cream-dark);
+    border-radius: 6px; padding: 11px 14px;
+    font-size: 12px; color: var(--gray-dark); margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .info-strip-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  .view { display: none; }
+  .view.active { display: block; animation: fadeUp 0.2s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  .sum-block { margin-bottom: 20px; }
+  .sum-heading { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-light); margin-bottom: 8px; }
+  .sum-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--gray-border); font-size: 12px; }
+  .sum-row:last-child { border-bottom: none; }
+  .sum-key { color: var(--gray-mid); font-weight: 500; flex-shrink: 0; margin-right: 12px; }
+  .sum-val { color: var(--black); font-weight: 600; text-align: right; }
+  .sum-chips { display: flex; flex-wrap: wrap; gap: 3px; justify-content: flex-end; }
+  .sum-chip { background: var(--orange-light); color: var(--orange-dark); border: 1px solid #DDB896; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+  .sum-chip.hw { background: var(--green-light); color: var(--green); border-color: #A8D5BB; }
+  .empty-val { color: var(--gray-border); font-style: italic; font-weight: 400; }
+
+  .confirm-wrap { text-align: center; padding: 44px 24px; }
+  .confirm-icon { width: 64px; height: 64px; border: 2px solid var(--green-check); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+  .confirm-title { font-size: 26px; font-weight: 800; color: var(--black); margin-bottom: 8px; letter-spacing: -0.5px; }
+  .confirm-sub { font-size: 14px; color: var(--gray-mid); max-width: 380px; margin: 0 auto 22px; line-height: 1.6; }
+  .ticket-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-bg); border: 1px solid var(--gray-border); border-radius: 5px; padding: 8px 16px; font-size: 14px; font-weight: 800; color: var(--black); margin-bottom: 20px; }
+  .status-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+  .status-chip { display: flex; align-items: center; gap: 5px; background: var(--white); border: 1px solid var(--gray-border); border-radius: 4px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--gray-dark); }
+
+  .preview-box {
+    background: var(--cream); border: 1px solid var(--cream-dark); border-radius: 6px;
+    padding: 16px 20px; text-align: left; margin: 0 auto 18px; max-width: 400px;
+  }
+  .preview-name { font-size: 16px; font-weight: 800; color: var(--black); margin-bottom: 3px; }
+  .preview-sub { font-size: 12px; color: var(--gray-mid); margin-bottom: 10px; }
+  .link-box {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--gray-bg); border: 1px solid var(--gray-border);
+    border-radius: 5px; padding: 9px 13px; margin: 0 auto 16px; max-width: 400px;
+    font-size: 11px; font-weight: 600; color: var(--gray-mid); word-break: break-all;
+  }
+
+  .perm-row { border-bottom: 1px solid var(--gray-border); }
+  .perm-row-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 0; cursor: pointer; user-select: none;
+  }
+  .perm-row-header:hover .perm-field-title { color: var(--orange-dark); }
+  .perm-row-text { flex: 1; min-width: 0; }
+  .perm-row-body { display: none; padding-bottom: 14px; animation: fadeUp 0.15s ease; }
+  .perm-field-icon { font-size: 18px; flex-shrink: 0; }
+  .perm-field-title { font-size: 13px; font-weight: 700; color: var(--black); }
+  .perm-field-desc { font-size: 11px; color: var(--gray-mid); margin-top: 2px; }
+  .perm-textarea {
+    border: 1px solid var(--gray-border); border-radius: 5px;
+    padding: 9px 11px; font-size: 13px; color: var(--black);
+    background: var(--white); width: 100%; outline: none;
+    font-family: inherit; resize: vertical; line-height: 1.5;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .perm-textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(184,115,58,0.12); }
+
+  .perm-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .toggle-track {
+    width: 36px; height: 20px; border-radius: 999px;
+    background: var(--gray-border); position: relative;
+    transition: background 0.2s; flex-shrink: 0;
+  }
+  .toggle-track.on { background: var(--orange); }
+  .toggle-thumb {
+    width: 14px; height: 14px; border-radius: 50%; background: white;
+    position: absolute; top: 3px; left: 3px;
+    transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle-track.on .toggle-thumb { left: 19px; }
+  .toggle-label { font-size: 12px; font-weight: 700; color: var(--gray-mid); min-width: 20px; }
+  .toggle-track.on + .toggle-label { color: var(--orange-dark); }
+
+  @media (max-width: 640px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .app-grid { grid-template-columns: 1fr 1fr; }
+    .hw-grid { grid-template-columns: repeat(3,1fr); }
+    .navbar { padding: 0 16px; }
+    .page { padding: 20px 16px 60px; }
+    .priority-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="admin-bar">
+  <button class="admin-tab active" onclick="setMode('it')">IT / HR Intake</button>
+  <button class="admin-tab" id="adminMgrTab" onclick="setMode('mgr')">Manager View</button>
+  <div class="admin-spacer"></div>
+  <button class="admin-login" onclick="toggleDemoLocation()" id="demoLocBtn">&#128205; Location: New York &mdash; HQ</button>
+  <button class="admin-login" onclick="toggleDemoHardware()" id="demoHwBtn" style="margin-left:6px">&#128421;&#65039; Hardware: Yes</button>
+</div>
+
+<div class="navbar">
+  <a class="nav-logo" href="#">
+    <div class="logo-mark"><img src="/images/unnamed_(1).png" alt="Scentbird"></div>
+    <div class="logo-text">
+      <div class="logo-name">SCENTBIRD</div>
+      <div class="logo-dept">IT &middot; Operations</div>
+    </div>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-link active" id="navSetup">&#9881; Setup</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-channel"><span class="hash">#</span>it-onboarding</div>
+  </div>
+</div>
+
+<div class="hero" id="heroBlock">
+  <div class="hero-icon-wrap pending" id="heroIconWrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#B8733A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+  </div>
+  <div class="hero-badge" id="heroBadge">IT Intake Form</div>
+  <div class="hero-title" id="heroTitle">New Hire Onboarding Request</div>
+  <div class="hero-sub" id="heroSub">Enter the employee's details from the HR ticket. Once complete, the hiring manager will receive a link to select software, hardware, and permissions.</div>
+</div>
+
+<div class="page" id="mainPage">
+
+  <div class="view active" id="itView">
+    <div class="view active" id="it1">
+      <p class="field-note" style="margin-bottom:16px">Fields marked <span style="color:var(--red)">*</span> are required.</p>
+
+      <div class="form-card" style="margin-bottom:16px">
+        <div class="form-card-header">
+          <div class="form-card-icon">&#127919;</div>
+          <div>
+            <div class="form-card-title">Jira Ticket Reference</div>
+            <div class="form-card-desc">This ticket will be auto-updated when onboarding completes</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-group" style="max-width:320px">
+            <label class="field-label">Ticket Key <span class="req">*</span></label>
+            <div style="display:flex;align-items:center;gap:0">
+              <span style="display:inline-flex;align-items:center;padding:0 12px;height:38px;background:var(--cream-dark);border:1.5px solid var(--gray-border);border-right:none;border-radius:6px 0 0 6px;font-size:13px;font-weight:700;color:var(--orange-dark);letter-spacing:0.3px;flex-shrink:0;">ITN-</span>
+              <input type="text" id="jiraTicketNum" placeholder="1234" style="border-radius:0 6px 6px 0;flex:1;min-width:0" oninput="syncJiraKey()" onkeypress="return /[0-9]/.test(event.key)">
+            </div>
+            <div id="jiraKeyPreview" style="margin-top:6px;font-size:11px;color:var(--gray-mid);display:none">
+              Full key: <strong id="jiraKeyFull" style="color:var(--orange-dark)"></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon">&#128100;</div>
+          <div>
+            <div class="form-card-title">Employee Details</div>
+            <div class="form-card-desc">From the HR onboarding ticket &mdash; manager won't re-enter any of this</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-grid">
+            <div class="form-group"><label class="field-label">First Name <span class="req">*</span></label><input type="text" id="firstName" placeholder="e.g. Jane"></div>
+            <div class="form-group"><label class="field-label">Last Name <span class="req">*</span></label><input type="text" id="lastName" placeholder="e.g. Smith"></div>
+            <div class="form-group"><label class="field-label">Personal Email <span class="req">*</span></label><input type="email" id="personalEmail" placeholder="jane.smith@gmail.com"></div>
+            <div class="form-group"><label class="field-label">Start Date <span class="req">*</span></label><input type="date" id="startDate"></div>
+            <div class="form-group">
+              <label class="field-label">Department <span class="req">*</span></label>
+              <select id="department"><option value="">Select&hellip;</option><option>Engineering</option><option>Product</option><option>Marketing</option><option>Finance</option><option>Operations</option><option>Customer Experience</option><option>HR / People Ops</option><option>Creative</option><option>Sales</option><option>Legal</option><option>Executive</option></select>
+            </div>
+            <div class="form-group"><label class="field-label">Job Title <span class="req">*</span></label><input type="text" id="jobTitle" placeholder="e.g. Software Engineer"></div>
+            <div class="form-group"><label class="field-label">Hiring Manager <span class="req">*</span></label><input type="text" id="manager" placeholder="Manager full name"></div>
+            <div class="form-group"><label class="field-label">Manager Email <span class="req">*</span></label><input type="email" id="managerEmail" placeholder="manager@scentbird.com"></div>
+            <div class="form-group">
+              <label class="field-label">Employment Type <span class="req">*</span></label>
+              <select id="empType"><option value="">Select&hellip;</option><option>Full Time</option><option>Part Time</option><option>Contractor</option><option>Temporary</option></select>
+            </div>
+            <div class="form-group">
+              <label class="field-label">Office Location</label>
+              <select id="location"><option value="">Select&hellip;</option><option>New York &mdash; HQ</option><option>Remote &mdash; US</option><option>Remote &mdash; International</option><option>Warehouse</option></select>
+            </div>
+            <div class="form-group full">
+              <label class="field-label">Priority <span class="req">*</span></label>
+              <div class="priority-row">
+                <div class="priority-opt" id="priStandard" onclick="setPriority('standard')">&#9989; Standard</div>
+                <div class="priority-opt" id="priUrgent"   onclick="setPriority('urgent')">&#9889; Urgent</div>
+                <div class="priority-opt" id="priCritical" onclick="setPriority('critical')">&#128680; Critical</div>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="field-label">Hardware Requested?</label>
+              <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                <div class="perm-toggle" onclick="toggleHardwareReq()" style="cursor:pointer;">
+                  <div class="toggle-track on" id="hwReqTrack"><div class="toggle-thumb"></div></div>
+                  <span class="toggle-label" id="hwReqLabel" style="color:var(--orange-dark)">Yes</span>
+                </div>
+                <span style="font-size:12px;color:var(--gray-mid)" id="hwReqHint">Manager will see the Hardware selection step</span>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="field-label">Internal IT Notes <span style="color:var(--gray-light);font-weight:500;text-transform:none;font-size:10px">(manager won't see this)</span></label>
+              <textarea id="itNotes" placeholder="Any notes for the IT team before sending to manager&hellip;" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <span style="font-size:12px;color:var(--gray-light)">Step 1 of 2</span>
+        <button class="btn btn-primary" onclick="itNext()">Preview &amp; Send to Manager &rarr;</button>
+      </div>
+    </div>
+
+    <div class="view" id="it2">
+      <div class="form-card">
+        <div class="form-card-body">
+          <div style="text-align:center;padding:32px 16px;">
+            <div class="hero-icon-wrap pending" style="margin:0 auto 16px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#B8733A" stroke-width="2.5" stroke-linecap="round"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+            </div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;">Ready to Send</div>
+            <div style="font-size:22px;font-weight:800;margin-bottom:8px;">Send to Hiring Manager</div>
+            <div style="font-size:13px;color:var(--gray-mid);margin-bottom:24px;max-width:360px;margin-left:auto;margin-right:auto;">Review the employee summary below, then send the manager their unique link.</div>
+            <div class="preview-box">
+              <div style="font-size:10px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;color:var(--gray-light);margin-bottom:8px;">Employee Preview</div>
+              <div class="preview-name" id="prev-name">&mdash;</div>
+              <div class="preview-sub" id="prev-sub">&mdash;</div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px;" id="prev-tags"></div>
+            </div>
+            <div class="link-box">
+              <span>&#128279;</span>
+              <span id="mockLink">https://onboarding.scentbird.com/complete?token=<span id="tokenStr">abc123</span></span>
+            </div>
+            <div id="jiraKeyBadge" style="display:none;margin-bottom:14px;">
+              <span style="display:inline-flex;align-items:center;gap:6px;background:var(--blue-light);border:1.5px solid #BFDBFE;color:#1D4ED8;font-size:12px;font-weight:700;padding:5px 12px;border-radius:6px;letter-spacing:0.3px;">&#127915; Linked to Jira: <span id="jiraKeyBadgeText"></span></span>
+            </div>
+            <div class="status-row" style="margin-bottom:20px;">
+              <div class="status-chip">&#128172; Slack DM to manager</div>
+              <div class="status-chip">&#128231; Email with link</div>
+              <div class="status-chip" id="jiraChip">&#127915; Jira ticket will be updated</div>
+            </div>
+            <button class="btn btn-primary btn-lg" onclick="sendToManager()">&rarr; Send to Manager</button>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="showIT(1)">&larr; Edit Employee Info</button>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="view" id="it3">
+      <div class="form-card">
+        <div class="form-card-body">
+          <div class="confirm-wrap">
+            <div class="confirm-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#4CAF7D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;">Sent</div>
+            <div class="confirm-title">Request Sent to Manager</div>
+            <div class="confirm-sub" id="sentConfirmSub">The hiring manager has been notified.</div>
+            <div class="ticket-pill">&#127915; Jira Ticket: <span id="draftTicketNum">IT-2847</span></div>
+            <div id="realMgrLinkBox" style="display:none;background:var(--gray-bg);border:1px solid var(--gray-border);border-radius:5px;padding:9px 13px;margin:0 auto 16px;max-width:400px;font-size:11px;font-weight:600;color:var(--gray-mid);word-break:break-all;text-align:left;">
+              <div style="margin-bottom:4px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;">Manager Link</div>
+              <span id="realMgrLink" style="color:var(--blue)"></span>
+            </div>
+            <div class="status-row">
+              <div class="status-chip">&#8987; Waiting on manager</div>
+              <div class="status-chip">&#128276; IT notified on completion</div>
+            </div>
+            <button class="btn btn-ghost" onclick="resetIT()">+ Start Another Request</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="mgrView">
+    <div class="emp-banner" id="empBanner">
+      <div class="emp-avatar" id="empInitials">JS</div>
+      <div style="flex:1">
+        <div class="emp-name" id="bnrName">Jane Smith</div>
+        <div class="emp-sub" id="bnrSub">Software Engineer &middot; Engineering</div>
+        <div class="emp-tags">
+          <span class="emp-tag highlight" id="bnrStart">&#128197; Starting Mon, Jun 30 2026</span>
+          <span class="emp-tag" id="bnrType">Full Time</span>
+          <span class="emp-tag" id="bnrLoc">&#127970; New York &mdash; HQ</span>
+          <span class="emp-tag" id="bnrMgr">&#128100; Reports to Alex Johnson</span>
+        </div>
+      </div>
+      <div class="locked-badge">&#128274; Pre-filled by IT</div>
+    </div>
+
+    <div class="step-tabs">
+      <button class="step-tab active" id="mgrTab1" onclick="mgrGoTo(1)"><span class="tab-num">1</span> Software</button>
+      <button class="step-tab" id="mgrTab2" onclick="mgrGoTo(2)"><span class="tab-num">2</span> Hardware</button>
+      <button class="step-tab" id="mgrTab3" onclick="mgrGoTo(3)"><span class="tab-num">3</span> Permissions</button>
+      <button class="step-tab" id="mgrTab4" onclick="mgrGoTo(4)"><span class="tab-num">4</span> Review &amp; Submit</button>
+    </div>
+
+    <div class="view active" id="mgr1">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon">&#128187;</div>
+          <div>
+            <div class="form-card-title">Software &amp; Application Access <span class="count-badge" id="swCount">0</span></div>
+            <div class="form-card-desc">Click to select. Select as many as needed.</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="info-strip">
+            <span class="info-strip-icon">&#128161;</span>
+            <span>Not sure about an app? Include it &mdash; IT will verify licensing.</span>
+          </div>
+
+          <div class="cat-label">Communication</div>
+          <div class="app-grid">
+            <div class="app-chip" onclick="toggleApp(this,'Zoom')"><span class="app-emoji"><img src="/images/5e8ce318664eae0004085461.png" alt="Zoom"></span><span class="app-label">Zoom</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </div>
+
+          <div class="cat-label">Productivity &amp; Project Management</div>
+          <div class="app-grid">
+            <div class="app-chip" onclick="toggleApp(this,'Office 365')"><span class="app-emoji"><img src="/images/61046986ada36000041881be.png" alt="Office 365"></span><span class="app-label">Office 365</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Jira')"><span class="app-emoji"><img src="/images/62a9ad4c8ff6441a2952dab8.png" alt="Jira"></span><span class="app-label">Jira</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Confluence')"><span class="app-emoji"><img src="/images/6298dda7173f782c64abc720.png" alt="Confluence"></span><span class="app-label">Confluence</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Smartsheet')"><span class="app-emoji"><img src="/images/629b483d95f79dc9fa7256f5.png" alt="Smartsheet"></span><span class="app-label">Smartsheet</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Quickbase')"><span class="app-emoji"><img src="/images/6347d2114934691e047c40ba.png" alt="Quickbase"></span><span class="app-label">Quickbase</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Dropbox')"><span class="app-emoji"><img src="/images/62b30b3ab223544c209f5e4d.png" alt="Dropbox"></span><span class="app-label">Dropbox</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Fellow')"><span class="app-emoji"><img src="/images/images_(3).png" alt="Fellow"></span><span class="app-label">Fellow</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </div>
+
+          <div class="cat-label">AI Tools</div>
+          <div class="app-grid">
+            <div class="app-chip" onclick="toggleApp(this,'Claude')"><span class="app-emoji"><img src="/images/66af99839e55f1ee29f117ac.png" alt="Claude"></span><span class="app-label">Claude</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'ChatGPT')"><span class="app-emoji"><img src="/images/63c52af590250dd34bd6a9ab.png" alt="ChatGPT"></span><span class="app-label">ChatGPT</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </div>
+
+          <div class="cat-label">Operations &amp; E-Commerce</div>
+          <div class="app-grid">
+            <div class="app-chip" onclick="toggleApp(this,'NetSuite')"><span class="app-emoji"><img src="/images/netsuite.svg" alt="NetSuite"></span><span class="app-label">NetSuite</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Snowflake')"><span class="app-emoji"><img src="/images/snowflake-color.png" alt="Snowflake"></span><span class="app-label">Snowflake</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'CRM')"><span class="app-emoji"><img src="/images/unnamed_(1).png" alt="CRM"></span><span class="app-label">CRM</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Kustomer')"><span class="app-emoji"><img src="/images/62b326c6b223544c209f5eb8.png" alt="Kustomer"></span><span class="app-label">Kustomer</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Shopify')"><span class="app-emoji"><img src="/images/58482ec0cef1014c0b5e4a70.png" alt="Shopify"></span><span class="app-label">Shopify</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Commercetools')"><span class="app-emoji"><img src="/images/commercetools.svg" alt="Commercetools"></span><span class="app-label">Commercetools</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Hummingbird')"><span class="app-emoji"><img src="/images/unnamed_(1).png" alt="Hummingbird"></span><span class="app-label">Hummingbird</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Snapfulfil')"><span class="app-emoji"><img src="/images/image_(11).png" alt="Snapfulfil"></span><span class="app-label">Snapfulfil</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </div>
+
+          <div class="cat-label">Creative &amp; Marketing</div>
+          <div class="app-grid">
+            <div class="app-chip" onclick="toggleApp(this,'Adobe Creative Cloud')"><span class="app-emoji"><img src="/images/62a36b916209494ec2b1706b.png" alt="Adobe CC"></span><span class="app-label">Adobe CC</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'Adobe Acrobat Pro')"><span class="app-emoji"><img src="/images/62a4c005fdee15d2905007bf.png" alt="Adobe Acrobat Pro"></span><span class="app-label">Adobe Acrobat Pro</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </div>
+
+          <div class="cat-label">Security &amp; IT</div>
+          <div class="app-grid">
+            <div class="app-chip" onclick="toggleApp(this,'Okta')"><span class="app-emoji"><img src="/images/629a0407b04c5ae587c411b4.png" alt="Okta"></span><span class="app-label">Okta</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            <div class="app-chip" onclick="toggleApp(this,'1Password')"><span class="app-emoji"><img src="/images/1password-8.png" alt="1Password"></span><span class="app-label">1Password</span><span class="app-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <span style="font-size:12px;color:var(--gray-light)">Step 1 of 4</span>
+        <button class="btn btn-primary" onclick="mgrContinueFromSoftware()">Continue</button>
+      </div>
+    </div>
+
+    <div class="view" id="mgr2">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon">&#128421;&#65039;</div>
+          <div>
+            <div class="form-card-title">Hardware <span class="count-badge" id="hwCount">0</span></div>
+            <div class="form-card-desc">Select all equipment needed on or before Day 1</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="cat-label" style="margin-top:0">Computers</div>
+          <div class="hw-grid">
+            <div class="hw-chip" onclick="toggleHw(this,'Windows Laptop')"><div class="hw-check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hw-emoji">&#128187;</div><div class="hw-label">Windows Laptop</div></div>
+            <div class="hw-chip" onclick="toggleHw(this,'MacBook')"><div class="hw-check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hw-emoji">&#127822;</div><div class="hw-label">MacBook</div></div>
+          </div>
+          <div id="peripherals-group" style="display:none">
+            <div class="cat-label">Peripherals <span style="font-size:9px;font-weight:600;color:var(--orange);text-transform:none;letter-spacing:0">&middot; Warehouse only</span></div>
+            <div class="hw-grid">
+              <div class="hw-chip" onclick="toggleHw(this,'Monitor')"><div class="hw-check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hw-emoji">&#128250;</div><div class="hw-label">Monitor</div></div>
+              <div class="hw-chip" onclick="toggleHw(this,'Docking Station')"><div class="hw-check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hw-emoji">&#128268;</div><div class="hw-label">Docking Station</div></div>
+              <div class="hw-chip" onclick="toggleHw(this,'Keyboard')"><div class="hw-check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hw-emoji">&#9000;&#65039;</div><div class="hw-label">Keyboard</div></div>
+              <div class="hw-chip" onclick="toggleHw(this,'Mouse')"><div class="hw-check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hw-emoji">&#128433;&#65039;</div><div class="hw-label">Mouse</div></div>
+              <div class="hw-chip" onclick="toggleHw(this,'Headset')"><div class="hw-check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hw-emoji">&#127911;</div><div class="hw-label">Headset</div></div>
+              <div class="hw-chip" onclick="toggleHw(this,'Webcam')"><div class="hw-check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hw-emoji">&#128247;</div><div class="hw-label">Webcam</div></div>
+              <div class="hw-chip" onclick="toggleHw(this,'Mobile Phone')"><div class="hw-check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="hw-emoji">&#128241;</div><div class="hw-label">Mobile Phone</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="mgrGoTo(1)">&larr; Back</button>
+        <button class="btn btn-primary" onclick="mgrGoTo(3)">Continue</button>
+      </div>
+    </div>
+
+    <div class="view" id="mgr3">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon">&#129703;</div>
+          <div>
+            <div class="form-card-title">Mirror an Existing Employee</div>
+            <div class="form-card-desc">If someone on the team already has the right access, we can copy it exactly</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="form-group" style="margin-bottom:12px">
+            <label class="field-label">Is there a current employee whose access this new hire should mirror?</label>
+            <input type="text" id="mirrorUser" placeholder="e.g. Alex Johnson or alex.johnson@scentbird.com" oninput="onMirrorInput()">
+          </div>
+          <div id="mirror-notice" style="display:none">
+            <div class="info-strip" style="background:var(--green-light);border-color:#A8D5BB;">
+              <span class="info-strip-icon">&#9989;</span>
+              <span style="color:var(--green)"><strong>Mirror user set.</strong> IT will replicate their permissions exactly. You can skip straight to Review &mdash; or fill in overrides below.</span>
+            </div>
+            <div style="text-align:right;margin-top:4px;">
+              <button class="btn btn-success" onclick="mgrGoTo(4)" style="font-size:12px;padding:7px 16px;">Skip to Review &rarr;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;margin:4px 0 16px;color:var(--gray-light);font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;">
+        <div style="flex:1;height:1px;background:var(--gray-border)"></div>
+        OR SPECIFY MANUALLY BELOW
+        <div style="flex:1;height:1px;background:var(--gray-border)"></div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon">&#128081;</div>
+          <div>
+            <div class="form-card-title">Admin Access</div>
+            <div class="form-card-desc">Requires InfoSec approval &mdash; only request if necessary for the role</div>
+          </div>
+          <div style="margin-left:auto">
+            <div class="perm-toggle" id="adminToggle" onclick="toggleAdminAccess()">
+              <div class="toggle-track" id="adminTrack"><div class="toggle-thumb" id="adminThumb"></div></div>
+              <span class="toggle-label" id="adminLabel">No</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon">&#128273;</div>
+          <div>
+            <div class="form-card-title">Access &amp; Groups</div>
+            <div class="form-card-desc">Toggle on any that apply</div>
+          </div>
+        </div>
+        <div class="form-card-body" style="display:flex;flex-direction:column;gap:0;">
+          <div class="perm-row">
+            <div class="perm-row-header" onclick="togglePermField('googleGroups')">
+              <span class="perm-field-icon">&#128101;</span>
+              <div class="perm-row-text"><div class="perm-field-title">Google Groups</div><div class="perm-field-desc">Which groups should this employee be added to?</div></div>
+              <div class="perm-toggle"><div class="toggle-track" id="track-googleGroups"><div class="toggle-thumb"></div></div><span class="toggle-label" id="label-googleGroups">No</span></div>
+            </div>
+            <div class="perm-row-body" id="body-googleGroups">
+              <textarea id="permGoogleGroups" class="perm-textarea" placeholder="e.g. engineering-all, product-team&#10;One per line or comma-separated" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="perm-row">
+            <div class="perm-row-header" onclick="togglePermField('slackChannels')">
+              <span class="perm-field-icon">&#128172;</span>
+              <div class="perm-row-text"><div class="perm-field-title">Slack Channels</div><div class="perm-field-desc">Which channels beyond the department default?</div></div>
+              <div class="perm-toggle"><div class="toggle-track" id="track-slackChannels"><div class="toggle-thumb"></div></div><span class="toggle-label" id="label-slackChannels">No</span></div>
+            </div>
+            <div class="perm-row-body" id="body-slackChannels">
+              <textarea id="permSlackChannels" class="perm-textarea" placeholder="e.g. #product-team, #design-reviews&#10;One per line or comma-separated" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="perm-row">
+            <div class="perm-row-header" onclick="togglePermField('distLists')">
+              <span class="perm-field-icon">&#128203;</span>
+              <div class="perm-row-text"><div class="perm-field-title">Distribution Lists</div><div class="perm-field-desc">Which email distribution lists should they be on?</div></div>
+              <div class="perm-toggle"><div class="toggle-track" id="track-distLists"><div class="toggle-thumb"></div></div><span class="toggle-label" id="label-distLists">No</span></div>
+            </div>
+            <div class="perm-row-body" id="body-distLists">
+              <textarea id="permDistLists" class="perm-textarea" placeholder="e.g. marketing@scentbird.com&#10;One per line or comma-separated" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="perm-row">
+            <div class="perm-row-header" onclick="togglePermField('drives')">
+              <span class="perm-field-icon">&#128193;</span>
+              <div class="perm-row-text"><div class="perm-field-title">Department Drives</div><div class="perm-field-desc">Which shared drives or folders should they have access to?</div></div>
+              <div class="perm-toggle"><div class="toggle-track" id="track-drives"><div class="toggle-thumb"></div></div><span class="toggle-label" id="label-drives">No</span></div>
+            </div>
+            <div class="perm-row-body" id="body-drives">
+              <textarea id="permDrives" class="perm-textarea" placeholder="e.g. Marketing Assets, Brand Guidelines&#10;One per line or comma-separated" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="perm-row" style="border-bottom:none">
+            <div class="perm-row-header" onclick="togglePermField('snapfulfil')">
+              <span class="perm-field-icon">&#127981;</span>
+              <div class="perm-row-text"><div class="perm-field-title">Snapfulfil Access</div><div class="perm-field-desc">Warehouse management system &mdash; mirror an existing user's role</div></div>
+              <div class="perm-toggle"><div class="toggle-track" id="track-snapfulfil"><div class="toggle-thumb"></div></div><span class="toggle-label" id="label-snapfulfil">No</span></div>
+            </div>
+            <div class="perm-row-body" id="body-snapfulfil">
+              <input type="text" id="permSnapfulfil" class="perm-textarea" placeholder="Who should the account mirror? e.g. Maria Torres" style="height:auto;padding:9px 11px;resize:none;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon">&#128221;</div>
+          <div>
+            <div class="form-card-title">Additional Notes</div>
+            <div class="form-card-desc">Anything else IT should know</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <textarea id="mgrNotes" placeholder="&#x2022; Additional software&#10;&#x2022; Special hardware specs&#10;&#x2022; Vendor portal accounts&#10;&#x2022; Any other notes for IT&hellip;" rows="5"></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="mgrBackFromPermissions()">&larr; Back</button>
+        <button class="btn btn-primary" onclick="mgrGoTo(4)">Continue</button>
+      </div>
+    </div>
+
+    <div class="view" id="mgr4">
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon">&#128203;</div>
+          <div>
+            <div class="form-card-title">Review &amp; Submit</div>
+            <div class="form-card-desc">Confirm everything &mdash; once submitted IT will begin provisioning</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+          <div class="info-strip">
+            <span class="info-strip-icon">&#9888;&#65039;</span>
+            <span>Once submitted, the Jira ticket will be finalized and IT will receive a Slack notification to begin provisioning.</span>
+          </div>
+          <div class="sum-block">
+            <div class="sum-heading">&#128100; Employee (pre-filled by IT)</div>
+            <div class="sum-row"><span class="sum-key">Name</span><span class="sum-val" id="rv-name">&mdash;</span></div>
+            <div class="sum-row"><span class="sum-key">Dept &middot; Title</span><span class="sum-val" id="rv-dept">&mdash;</span></div>
+            <div class="sum-row"><span class="sum-key">Start Date</span><span class="sum-val" id="rv-start">&mdash;</span></div>
+            <div class="sum-row"><span class="sum-key">Type</span><span class="sum-val" id="rv-type">&mdash;</span></div>
+            <div class="sum-row"><span class="sum-key">Priority</span><span class="sum-val" id="rv-pri">&mdash;</span></div>
+          </div>
+          <div class="sum-block">
+            <div class="sum-heading">&#128187; Software <span class="count-badge" id="rv-sw-n">0</span></div>
+            <div class="sum-row"><span class="sum-key">Applications</span><span class="sum-val"><div class="sum-chips" id="rv-sw">&mdash;</div></span></div>
+          </div>
+          <div class="sum-block">
+            <div class="sum-heading">&#128421;&#65039; Hardware <span class="count-badge" id="rv-hw-n">0</span></div>
+            <div class="sum-row"><span class="sum-key">Equipment</span><span class="sum-val"><div class="sum-chips" id="rv-hw">&mdash;</div></span></div>
+          </div>
+          <div class="sum-block">
+            <div class="sum-heading">&#128273; Permissions &amp; Access</div>
+            <div id="rv-perm-rows"></div>
+          </div>
+          <div class="sum-block" id="rv-notes-block" style="display:none">
+            <div class="sum-heading">&#128221; Notes</div>
+            <div style="background:var(--gray-bg);border-radius:5px;padding:10px;font-size:12px;color:var(--gray-dark);white-space:pre-wrap;line-height:1.5" id="rv-notes-text"></div>
+          </div>
+          <div style="text-align:center;margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-primary btn-lg" onclick="mgrSubmit()">&#9989; Submit to IT</button>
+            <span style="font-size:11px;color:var(--gray-light)">IT will be notified in Slack &middot; Jira ticket updated automatically</span>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="mgrGoTo(3)">&larr; Back</button>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="view" id="mgr5">
+      <div class="form-card">
+        <div class="form-card-body">
+          <div class="confirm-wrap">
+            <div class="confirm-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#4CAF7D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;">All Done</div>
+            <div class="confirm-title">You're done &mdash; IT has everything.</div>
+            <div class="confirm-sub">You'll get a Slack message when your new hire is fully provisioned and ready for Day 1.</div>
+            <div class="ticket-pill">&#127915; Ticket: <span id="mgr-final-ticket">IT-2847</span></div>
+            <div style="font-size:13px;color:var(--gray-mid);margin-bottom:20px;">Average time to Day-1 ready: <strong>3&ndash;5 business days.</strong></div>
+            <div class="status-row">
+              <div class="status-chip">&#9881;&#65039; IT provisioning started</div>
+              <div class="status-chip">&#128231; Welcome email queued</div>
+              <div class="status-chip">&#128172; IT team notified</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const selectedApps  = new Set();
+const selectedHw    = new Set();
+const selectedPerms = new Set();
+let priority = '';
+let currentMode = 'it';
+
+const DEMO = {
+  firstName:'Jane', lastName:'Smith', jobTitle:'Software Engineer',
+  department:'Engineering', startDate:'2026-06-30',
+  empType:'Full Time', location:'New York — HQ', manager:'Alex Johnson',
+  managerEmail:'alex.johnson@scentbird.com', urgency:'standard',
+  hardwareRequested: true,
+  jiraKey: ''
+};
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('itView').classList.toggle('active', mode==='it');
+  document.getElementById('mgrView').classList.toggle('active', mode==='mgr');
+  document.querySelectorAll('.admin-tab').forEach((t,i)=>{
+    t.classList.toggle('active', (mode==='it'&&i===0)||(mode==='mgr'&&i===1));
+  });
+  if (mode === 'it') {
+    updateHero('pending','IT Intake Form','New Hire Onboarding Request',
+      "Enter the employee's details from the HR ticket. The hiring manager will then receive a link to select software, hardware, and permissions.");
+  } else {
+    updateHero('pending','Manager Request',"Complete Your New Hire's Setup",
+      'IT has pre-filled the employee details. Just select the software, hardware, and permissions your new hire needs — about 2 minutes.');
+    populateBanner(DEMO);
+    mgrGoTo(1);
+  }
+}
+
+function updateHero(iconType, badge, title, sub) {
+  document.getElementById('heroBadge').textContent = badge;
+  document.getElementById('heroTitle').textContent = title;
+  document.getElementById('heroSub').textContent   = sub;
+}
+
+function itNext() { buildPreview(); showIT(2); }
+
+function showIT(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('it'+i).classList.toggle('active', i===n);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function setPriority(val) {
+  priority = val;
+  ['standard','urgent','critical'].forEach(p => {
+    document.getElementById('pri'+p.charAt(0).toUpperCase()+p.slice(1))
+      .className = 'priority-opt' + (p===val ? ' sel-'+p : '');
+  });
+}
+
+function buildPreview() {
+  const fn = v('firstName'), ln = v('lastName');
+  const title = v('jobTitle'), dept = v('department');
+  const start = v('startDate'), type = v('empType'), loc = v('location');
+  document.getElementById('prev-name').textContent = [fn,ln].filter(Boolean).join(' ') || '—';
+  document.getElementById('prev-sub').textContent  = [title,dept].filter(Boolean).join(' · ') || '—';
+  const tagsEl = document.getElementById('prev-tags');
+  tagsEl.innerHTML = '';
+  if (start) addTag(tagsEl,'📅 '+fmtDate(start),'highlight');
+  if (type)  addTag(tagsEl, type, '');
+  if (loc)   addTag(tagsEl, loc, '');
+  document.getElementById('tokenStr').textContent = Math.random().toString(36).slice(2,10);
+  const key = DEMO.jiraKey || ('ITN-' + v('jiraTicketNum'));
+  const badge = document.getElementById('jiraKeyBadge');
+  const chip  = document.getElementById('jiraChip');
+  if (key && key !== 'ITN-') {
+    document.getElementById('jiraKeyBadgeText').textContent = key;
+    badge.style.display = 'block';
+    if (chip) chip.textContent = '🎫 Will update ' + key;
+  } else {
+    badge.style.display = 'none';
+    if (chip) chip.textContent = '🎫 Jira ticket will be updated';
+  }
+}
+
+function addTag(parent, text, cls) {
+  const s = document.createElement('span');
+  s.className = 'emp-tag' + (cls ? ' '+cls : '');
+  s.textContent = text;
+  parent.appendChild(s);
+}
+
+async function sendToManager() {
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  const payload = {
+    firstName:        v('firstName'),
+    lastName:         v('lastName'),
+    personalEmail:    v('personalEmail'),
+    startDate:        v('startDate'),
+    department:       v('department'),
+    jobTitle:         v('jobTitle'),
+    manager:          v('manager'),
+    managerEmail:     v('managerEmail'),
+    empType:          v('empType'),
+    location:         v('location'),
+    priority:         priority || 'standard',
+    hardwareRequested:DEMO.hardwareRequested,
+    jiraKey:          DEMO.jiraKey,
+    itNotes:          v('itNotes')
+  };
+
+  try {
+    const res  = await fetch('/api/intake', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Server error');
+
+    // Show the real manager URL
+    document.getElementById('draftTicketNum').textContent = DEMO.jiraKey || '—';
+    const mgr = v('manager') || 'the hiring manager';
+    document.getElementById('sentConfirmSub').textContent =
+      mgr + " has been notified. They'll use their unique link to complete the request.";
+    document.getElementById('realMgrLink').textContent = data.managerUrl;
+    document.getElementById('realMgrLinkBox').style.display = 'flex';
+    showIT(3);
+  } catch (err) {
+    alert('Error sending to manager: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = '→ Send to Manager';
+  }
+}
+
+function resetIT() {
+  ['firstName','lastName','personalEmail','startDate','jobTitle','manager','managerEmail','itNotes']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['department','empType','location'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['Standard','Urgent','Critical'].forEach(p =>
+    document.getElementById('pri'+p).className = 'priority-opt'
+  );
+  priority = '';
+  showIT(1);
+}
+
+function populateBanner(d) {
+  const initials = ((d.firstName||'')[0]||'').toUpperCase() + ((d.lastName||'')[0]||'').toUpperCase();
+  document.getElementById('empInitials').textContent = initials || '?';
+  document.getElementById('bnrName').textContent = [d.firstName,d.lastName].filter(Boolean).join(' ');
+  document.getElementById('bnrSub').textContent  = [d.jobTitle,d.department].filter(Boolean).join(' · ');
+  document.getElementById('bnrStart').textContent = '📅 Starting ' + fmtDate(d.startDate);
+  document.getElementById('bnrType').textContent  = d.empType || '';
+  document.getElementById('bnrLoc').textContent   = d.location ? '🏢 '+d.location : '';
+  document.getElementById('bnrMgr').textContent   = d.manager  ? '👤 Reports to '+d.manager : '';
+  const isWarehouse = (d.location || '').toLowerCase().includes('warehouse');
+  document.getElementById('peripherals-group').style.display = isWarehouse ? 'block' : 'none';
+  if (!isWarehouse) {
+    ['Monitor','Docking Station','Keyboard','Mouse','Headset','Webcam','Mobile Phone'].forEach(item => {
+      if (selectedHw.has(item)) {
+        selectedHw.delete(item);
+        document.querySelectorAll('#peripherals-group .hw-chip').forEach(el => el.classList.remove('selected'));
+      }
+    });
+    document.getElementById('hwCount').textContent = selectedHw.size;
+  }
+}
+
+function mgrGoTo(n) {
+  [1,2,3,4,5].forEach(i => {
+    document.getElementById('mgr'+i).classList.toggle('active', i===n);
+  });
+  const hwTab = document.getElementById('mgrTab2');
+  hwTab.style.display = DEMO.hardwareRequested ? '' : 'none';
+  const tabMap = DEMO.hardwareRequested
+    ? [{id:'mgrTab1',step:1},{id:'mgrTab2',step:2},{id:'mgrTab3',step:3},{id:'mgrTab4',step:4}]
+    : [{id:'mgrTab1',step:1},{id:'mgrTab3',step:3},{id:'mgrTab4',step:4}];
+  tabMap.forEach(({id, step}, idx) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.className = 'step-tab' + (step===n?' active':(step<n?' done':''));
+    const numEl = el.querySelector('.tab-num');
+    if (step < n)  numEl.textContent = '✓';
+    else           numEl.textContent = idx + 1;
+  });
+  if (n===4) buildReview();
+  if (n===5) document.querySelector('.step-tabs').style.display = 'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleApp(el, name) {
+  if (selectedApps.has(name)) { selectedApps.delete(name); el.classList.remove('selected'); }
+  else                        { selectedApps.add(name);    el.classList.add('selected'); }
+  document.getElementById('swCount').textContent = selectedApps.size;
+}
+
+function toggleHw(el, name) {
+  if (selectedHw.has(name)) { selectedHw.delete(name); el.classList.remove('selected'); }
+  else                      { selectedHw.add(name);    el.classList.add('selected'); }
+  document.getElementById('hwCount').textContent = selectedHw.size;
+}
+
+function togglePermField(id) {
+  const track = document.getElementById('track-' + id);
+  const label = document.getElementById('label-' + id);
+  const body  = document.getElementById('body-' + id);
+  const isOn  = track.classList.toggle('on');
+  label.textContent = isOn ? 'Yes' : 'No';
+  body.style.display = isOn ? 'block' : 'none';
+  if (!isOn) { const input = body.querySelector('input, textarea'); if (input) input.value = ''; }
+}
+
+function buildReview() {
+  const d = DEMO;
+  document.getElementById('rv-name').textContent  = d.firstName+' '+d.lastName;
+  document.getElementById('rv-dept').textContent  = [d.jobTitle,d.department].filter(Boolean).join(' · ');
+  document.getElementById('rv-start').textContent = fmtDate(d.startDate);
+  document.getElementById('rv-type').textContent  = d.empType;
+  document.getElementById('rv-pri').textContent   = {standard:'✅ Standard',urgent:'⚡ Urgent',critical:'🚨 Critical'}[d.urgency]||'—';
+  const sw = [...selectedApps];
+  document.getElementById('rv-sw-n').textContent = sw.length;
+  document.getElementById('rv-sw').innerHTML = sw.length
+    ? sw.map(s=>`<span class="sum-chip">${s}</span>`).join('')
+    : '<span class="empty-val">None selected</span>';
+  const hw = [...selectedHw];
+  document.getElementById('rv-hw-n').textContent = hw.length;
+  document.getElementById('rv-hw').innerHTML = hw.length
+    ? hw.map(h=>`<span class="sum-chip hw">${h}</span>`).join('')
+    : '<span class="empty-val">None selected</span>';
+  const mirrorUser   = (document.getElementById('mirrorUser').value||'').trim();
+  const googleGroups = (document.getElementById('permGoogleGroups').value||'').trim();
+  const slackChs     = (document.getElementById('permSlackChannels').value||'').trim();
+  const distLists    = (document.getElementById('permDistLists').value||'').trim();
+  const drives       = (document.getElementById('permDrives').value||'').trim();
+  const snapfulfil   = (document.getElementById('permSnapfulfil').value||'').trim();
+  const permRows = [];
+  if (mirrorUser)    permRows.push(['🪷 Mirror user', mirrorUser]);
+  if (adminAccessOn) permRows.push(['👑 Admin Access', 'Yes — pending InfoSec approval']);
+  if (googleGroups)  permRows.push(['👥 Google Groups', googleGroups]);
+  if (slackChs)      permRows.push(['💬 Slack Channels', slackChs]);
+  if (distLists)     permRows.push(['📋 Distribution Lists', distLists]);
+  if (drives)        permRows.push(['📁 Dept. Drives', drives]);
+  if (snapfulfil)    permRows.push(['🏭 Snapfulfil mirror', snapfulfil]);
+  const permEl = document.getElementById('rv-perm-rows');
+  if (permRows.length) {
+    permEl.innerHTML = permRows.map(([k,val]) =>
+      `<div class="sum-row"><span class="sum-key">${k}</span><span class="sum-val" style="max-width:65%;white-space:pre-wrap;text-align:right">${val}</span></div>`
+    ).join('');
+  } else {
+    permEl.innerHTML = '<div class="sum-row"><span class="sum-key">Permissions</span><span class="sum-val"><span class="empty-val">None specified</span></span></div>';
+  }
+  const notes = (document.getElementById('mgrNotes').value||'').trim();
+  const nb = document.getElementById('rv-notes-block');
+  if (notes) { nb.style.display='block'; document.getElementById('rv-notes-text').textContent=notes; }
+  else        { nb.style.display='none'; }
+}
+
+async function mgrSubmit() {
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  const payload = {
+    token: window._mgrToken,
+    software:     [...selectedApps],
+    hardware:     [...selectedHw],
+    permissions: {
+      mirrorUser:    (document.getElementById('mirrorUser').value||'').trim(),
+      adminAccess:   adminAccessOn,
+      googleGroups:  (document.getElementById('permGoogleGroups').value||'').trim(),
+      slackChannels: (document.getElementById('permSlackChannels').value||'').trim(),
+      distLists:     (document.getElementById('permDistLists').value||'').trim(),
+      drives:        (document.getElementById('permDrives').value||'').trim(),
+      snapfulfil:    (document.getElementById('permSnapfulfil').value||'').trim()
+    },
+    notes: (document.getElementById('mgrNotes').value||'').trim()
+  };
+
+  try {
+    const res  = await fetch('/api/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Server error');
+
+    document.getElementById('mgr-final-ticket').textContent = data.jiraKey || '—';
+    mgrGoTo(5);
+    document.querySelector('.step-tabs').style.display = 'none';
+  } catch (err) {
+    alert('Submission error: ' + err.message + '\n\nCheck browser console for details.');
+    btn.disabled = false;
+    btn.textContent = '✅ Submit to IT';
+  }
+}
+
+function toggleHardwareReq() {
+  const track = document.getElementById('hwReqTrack');
+  const label = document.getElementById('hwReqLabel');
+  const hint  = document.getElementById('hwReqHint');
+  const isOn  = track.classList.toggle('on');
+  DEMO.hardwareRequested = isOn;
+  label.textContent = isOn ? 'Yes' : 'No';
+  label.style.color = isOn ? 'var(--orange-dark)' : 'var(--gray-mid)';
+  hint.textContent  = isOn ? 'Manager will see the Hardware selection step' : 'Hardware step will be skipped for the manager';
+}
+
+function mgrContinueFromSoftware() { mgrGoTo(DEMO.hardwareRequested ? 2 : 3); }
+function mgrBackFromPermissions()  { mgrGoTo(DEMO.hardwareRequested ? 2 : 1); }
+
+function onMirrorInput() {
+  const val = document.getElementById('mirrorUser').value.trim();
+  document.getElementById('mirror-notice').style.display = val ? 'block' : 'none';
+}
+
+let adminAccessOn = false;
+function toggleAdminAccess() {
+  adminAccessOn = !adminAccessOn;
+  document.getElementById('adminTrack').classList.toggle('on', adminAccessOn);
+  document.getElementById('adminLabel').textContent = adminAccessOn ? 'Yes' : 'No';
+  if (adminAccessOn) selectedPerms.add('Admin Access');
+  else selectedPerms.delete('Admin Access');
+}
+
+function toggleDemoLocation() {
+  const isWh = DEMO.location === 'Warehouse';
+  DEMO.location = isWh ? 'New York — HQ' : 'Warehouse';
+  document.getElementById('demoLocBtn').textContent = '📍 Location: ' + DEMO.location;
+  if (currentMode === 'mgr') populateBanner(DEMO);
+}
+
+function toggleDemoHardware() {
+  DEMO.hardwareRequested = !DEMO.hardwareRequested;
+  document.getElementById('demoHwBtn').textContent = '🖥️ Hardware: ' + (DEMO.hardwareRequested ? 'Yes' : 'No');
+  const track = document.getElementById('hwReqTrack');
+  const label = document.getElementById('hwReqLabel');
+  const hint  = document.getElementById('hwReqHint');
+  if (track) {
+    track.classList.toggle('on', DEMO.hardwareRequested);
+    label.textContent = DEMO.hardwareRequested ? 'Yes' : 'No';
+    label.style.color = DEMO.hardwareRequested ? 'var(--orange-dark)' : 'var(--gray-mid)';
+    hint.textContent  = DEMO.hardwareRequested ? 'Manager will see the Hardware selection step' : 'Hardware step will be skipped for the manager';
+  }
+  if (currentMode === 'mgr') mgrGoTo(1);
+}
+
+function syncJiraKey() {
+  const num = document.getElementById('jiraTicketNum').value.trim();
+  const preview = document.getElementById('jiraKeyPreview');
+  const full    = document.getElementById('jiraKeyFull');
+  if (num) {
+    DEMO.jiraKey = 'ITN-' + num;
+    full.textContent = DEMO.jiraKey;
+    preview.style.display = 'block';
+  } else {
+    DEMO.jiraKey = '';
+    preview.style.display = 'none';
+  }
+}
+
+function v(id) { const el=document.getElementById(id); return el?el.value.trim():''; }
+function fmtDate(d) {
+  if (!d) return '—';
+  try { return new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'}); }
+  catch { return d; }
+}
+
+// ── On page load: detect manager token in URL ────────────────────────────
+window._mgrToken = null;
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const token  = params.get('token');
+  if (!token) return;
+
+  try {
+    const raw  = atob(token.replace(/-/g,'+').replace(/_/g,'/'));
+    const data = JSON.parse(raw);
+    window._mgrToken = token;
+
+    // Populate DEMO from token
+    DEMO.firstName        = data.fn  || '';
+    DEMO.lastName         = data.ln  || '';
+    DEMO.jobTitle         = data.jt  || '';
+    DEMO.department       = data.dept|| '';
+    DEMO.startDate        = data.sd  || '';
+    DEMO.empType          = data.et  || '';
+    DEMO.location         = data.loc || '';
+    DEMO.manager          = data.mgr || '';
+    DEMO.managerEmail     = data.mgrEm||'';
+    DEMO.urgency          = data.pri || 'standard';
+    DEMO.hardwareRequested= data.hw  === 1;
+    DEMO.jiraKey          = data.jira|| '';
+
+    // Auto-switch to manager view
+    setMode('mgr');
+
+    // Hide admin bar (manager shouldn't see it)
+    document.querySelector('.admin-bar').style.display = 'none';
+  } catch(e) {
+    console.error('Invalid token:', e);
+  }
+})();
+
+</script>
+</body>
+</html>
