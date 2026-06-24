@@ -1,5 +1,6 @@
 // api/complete.js
-// Receives manager's completed selections, posts a comment to the existing Jira ticket
+// Receives manager's completed selections, triggers Jira Automation webhook
+// to post a formatted comment on the existing ticket — no API token needed.
 // POST /api/complete
 
 export default async function handler(req, res) {
@@ -23,83 +24,61 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'No Jira ticket key in token' });
     }
 
-    // Build a clean comment body
+    const webhookUrl = process.env.JIRA_WEBHOOK_URL;
+    if (!webhookUrl) {
+      return res.status(500).json({ error: 'JIRA_WEBHOOK_URL not configured' });
+    }
+
     const startDate = itData.sd
       ? new Date(itData.sd + 'T12:00:00').toLocaleDateString('en-US', {
           weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         })
-      : itData.sd;
+      : itData.sd || 'Not specified';
 
-    const swList  = (software || []).length  ? software.join(', ')  : '_None selected_';
-    const hwList  = (hardware || []).length  ? hardware.join(', ')  : '_None requested_';
+    const swList  = (software || []).length ? software.join(', ') : 'None selected';
+    const hwList  = (hardware || []).length ? hardware.join(', ') : 'None requested';
 
-    const permLines = [];
-    if (permissions?.mirrorUser)    permLines.push(`* *Mirror user:* ${permissions.mirrorUser}`);
-    if (permissions?.adminAccess)   permLines.push(`* *Admin Access:* Yes — pending InfoSec approval`);
-    if (permissions?.googleGroups)  permLines.push(`* *Google Groups:* ${permissions.googleGroups}`);
-    if (permissions?.slackChannels) permLines.push(`* *Slack Channels:* ${permissions.slackChannels}`);
-    if (permissions?.distLists)     permLines.push(`* *Distribution Lists:* ${permissions.distLists}`);
-    if (permissions?.drives)        permLines.push(`* *Department Drives:* ${permissions.drives}`);
-    if (permissions?.snapfulfil)    permLines.push(`* *Snapfulfil mirror:* ${permissions.snapfulfil}`);
-    const permSection = permLines.length ? permLines.join('\n') : '_None specified_';
+    const permParts = [];
+    if (permissions?.mirrorUser)    permParts.push(`Mirror user: ${permissions.mirrorUser}`);
+    if (permissions?.adminAccess)   permParts.push(`Admin Access: Yes (pending InfoSec approval)`);
+    if (permissions?.googleGroups)  permParts.push(`Google Groups: ${permissions.googleGroups}`);
+    if (permissions?.slackChannels) permParts.push(`Slack Channels: ${permissions.slackChannels}`);
+    if (permissions?.distLists)     permParts.push(`Distribution Lists: ${permissions.distLists}`);
+    if (permissions?.drives)        permParts.push(`Department Drives: ${permissions.drives}`);
+    if (permissions?.snapfulfil)    permParts.push(`Snapfulfil mirror: ${permissions.snapfulfil}`);
+    const permStr = permParts.length ? permParts.join(' | ') : 'None specified';
 
-    const comment = `*✅ Manager onboarding form completed*
+    // POST to Jira Automation incoming webhook
+    // "issues" tells Jira which ticket to run the automation on
+    // All other fields are accessible in the rule as {{webhookData.fieldName}}
+    const webhookPayload = {
+      issues: [jiraKey],
+      name:        `${itData.fn} ${itData.ln}`,
+      title:       `${itData.jt} · ${itData.dept}`,
+      startDate,
+      empType:     itData.et  || '',
+      location:    itData.loc || 'Not specified',
+      priority:    itData.pri || 'standard',
+      manager:     `${itData.mgr} (${itData.mgrEm})`,
+      software:    swList,
+      hardware:    hwList,
+      permissions: permStr,
+      notes:       notes || 'None',
+      itNotes:     itData.notes || 'None'
+    };
 
-----
-
-*Employee:* ${itData.fn} ${itData.ln}
-*Title / Dept:* ${itData.jt} · ${itData.dept}
-*Start Date:* ${startDate}
-*Employment Type:* ${itData.et}
-*Location:* ${itData.loc || 'Not specified'}
-*Priority:* ${itData.pri || 'standard'}
-*Hiring Manager:* ${itData.mgr} (${itData.mgrEm})
-
-----
-
-*💻 Software Access Requested:*
-${swList}
-
-*🖥️ Hardware Requested:*
-${hwList}
-
-*🔑 Permissions & Access:*
-${permSection}
-
-${notes ? `*📝 Manager Notes:*\n${notes}\n\n` : ''}----
-_Form submitted by hiring manager via IT Onboarding Portal. Please begin provisioning._`;
-
-    // Post comment to Jira
-    const jiraDomain = process.env.JIRA_DOMAIN;   // e.g. scentbird.atlassian.net
-    const jiraEmail  = process.env.JIRA_EMAIL;    // service account email
-    const jiraToken  = process.env.JIRA_API_TOKEN; // API token for that account
-
-    if (!jiraDomain || !jiraEmail || !jiraToken) {
-      console.error('Missing Jira env vars');
-      return res.status(500).json({ error: 'Jira not configured' });
-    }
-
-    const auth = Buffer.from(`${jiraEmail}:${jiraToken}`).toString('base64');
-    const jiraRes = await fetch(
-      `https://${jiraDomain}/rest/api/2/issue/${jiraKey}/comment`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Basic ${auth}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ body: comment })
-      }
-    );
+    const jiraRes = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(webhookPayload)
+    });
 
     if (!jiraRes.ok) {
       const errText = await jiraRes.text();
-      console.error('Jira error:', jiraRes.status, errText);
+      console.error('Jira webhook error:', jiraRes.status, errText);
       return res.status(502).json({
-        error: 'Failed to update Jira ticket',
-        status: jiraRes.status,
-        detail: errText
+        error: 'Failed to trigger Jira automation',
+        status: jiraRes.status
       });
     }
 
@@ -110,7 +89,7 @@ _Form submitted by hiring manager via IT Onboarding Portal. Please begin provisi
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          text: `✅ *${itData.fn} ${itData.ln}* onboarding form completed by ${itData.mgr}.\nJira: <https://${jiraDomain}/browse/${jiraKey}|${jiraKey}> · Start: ${startDate}`
+          text: `✅ *${itData.fn} ${itData.ln}* onboarding form completed by ${itData.mgr}.\nJira ticket *${jiraKey}* has been updated. Start date: ${startDate}`
         })
       }).catch(e => console.error('Slack notify failed:', e));
     }
