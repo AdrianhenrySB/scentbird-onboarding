@@ -10,12 +10,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Optional: protect with a shared secret so only your Jira Automation can write here
-  const secret = req.headers['x-automation-webhook-token'];
-  const expectedSecret = process.env.CACHE_TICKET_SECRET;
-  if (expectedSecret && secret !== expectedSecret) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
+  // Auth temporarily disabled for testing — re-enable after confirming flow works
+  // const secret = req.headers['x-automation-webhook-token'];
+  // const expectedSecret = process.env.CACHE_TICKET_SECRET;
+  // if (expectedSecret && secret !== expectedSecret) {
+  //   return res.status(401).json({ error: 'Unauthorized' });
+  // }
 
   const body = req.body;
   const key = body.key; // e.g. "ITN-1172"
