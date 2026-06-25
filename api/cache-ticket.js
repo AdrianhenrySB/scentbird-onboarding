@@ -18,6 +18,7 @@ export default async function handler(req, res) {
   // }
 
   const body = req.body;
+  console.log('cache-ticket received body:', JSON.stringify(body));
   const key = body.key; // e.g. "ITN-1172"
 
   if (!key) {
