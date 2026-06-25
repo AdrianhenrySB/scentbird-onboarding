@@ -26,10 +26,12 @@ export default async function handler(req, res) {
   }
 
   // Normalize the data coming from Jira Automation smart values
+  const fullName = (body.name || body.firstName || '').trim();
+  const nameParts = fullName.split(' ');
   const ticketData = {
     key,
-    firstName:     (body.firstName     || '').trim(),
-    lastName:      (body.lastName      || '').trim(),
+    firstName:     nameParts[0] || '',
+    lastName:      nameParts.slice(1).join(' ') || '',
     email:         (body.email         || '').trim(),
     jobTitle:      (body.jobTitle      || '').trim(),
     empType:       normalizeEmpType(body.empType || ''),
