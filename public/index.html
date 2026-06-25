@@ -553,7 +553,7 @@
             </div>
             <div class="form-group">
               <label class="field-label">Office Location</label>
-              <select id="location"><option value="">Select&hellip;</option><option>New York &mdash; HQ</option><option>Remote &mdash; US</option><option>Remote &mdash; International</option><option>Warehouse</option></select>
+              <select id="location"><option value="">Select&hellip;</option><option>Remote</option><option>Remote Overseas</option><option>Warehouse</option></select>
             </div>
             <div class="form-group full">
               <label class="field-label">Priority <span class="req">*</span></label>
@@ -991,7 +991,7 @@ let currentMode = 'it';
 const DEMO = {
   firstName:'Jane', lastName:'Smith', jobTitle:'Software Engineer',
   department:'Engineering', startDate:'2026-06-30',
-  empType:'Full Time', location:'New York — HQ', manager:'Alex Johnson',
+  empType:'Full Time', location:'Remote', manager:'Alex Johnson',
   managerEmail:'alex.johnson@scentbird.com', urgency:'standard',
   hardwareRequested: true,
   jiraKey: ''
@@ -1134,7 +1134,7 @@ function populateBanner(d) {
   document.getElementById('bnrSub').textContent  = [d.jobTitle,d.department].filter(Boolean).join(' · ');
   document.getElementById('bnrStart').textContent = '📅 Starting ' + fmtDate(d.startDate);
   document.getElementById('bnrType').textContent  = d.empType || '';
-  document.getElementById('bnrLoc').textContent   = d.location ? '🏢 '+d.location : '';
+  document.getElementById('bnrLoc').textContent   = d.location ? d.location : '';
   document.getElementById('bnrMgr').textContent   = d.manager  ? '👤 Reports to '+d.manager : '';
   const isWarehouse = (d.location || '').toLowerCase().includes('warehouse');
   document.getElementById('peripherals-group').style.display = isWarehouse ? 'block' : 'none';
@@ -1308,7 +1308,7 @@ function toggleAdminAccess() {
 
 function toggleDemoLocation() {
   const isWh = DEMO.location === 'Warehouse';
-  DEMO.location = isWh ? 'New York — HQ' : 'Warehouse';
+  DEMO.location = isWh ? 'Remote' : 'Warehouse';
   document.getElementById('demoLocBtn').textContent = '📍 Location: ' + DEMO.location;
   if (currentMode === 'mgr') populateBanner(DEMO);
 }
