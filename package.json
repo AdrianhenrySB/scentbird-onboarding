@@ -4,5 +4,8 @@
   "private": true,
   "description": "Scentbird IT New Hire Onboarding Portal",
   "engines": { "node": ">=18" },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@vercel/kv": "^3.0.0"
+  }
 }

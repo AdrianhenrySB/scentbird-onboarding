@@ -522,6 +522,7 @@
             <div id="jiraKeyPreview" style="margin-top:6px;font-size:11px;color:var(--gray-mid);display:none">
               Full key: <strong id="jiraKeyFull" style="color:var(--orange-dark)"></strong>
             </div>
+            <div id="ticketFetchStatus" style="display:none;margin-top:6px;font-size:12px;font-weight:600;padding:5px 10px;border-radius:5px;"></div>
           </div>
         </div>
       </div>
@@ -1116,6 +1117,56 @@ async function sendToManager() {
   }
 }
 
+async function fetchTicketData(key) {
+  const status = document.getElementById('ticketFetchStatus');
+  status.style.display = 'block';
+  status.style.background = '#FEF9C3';
+  status.style.color = '#854D0E';
+  status.textContent = '⏳ Looking up ticket…';
+
+  try {
+    const res  = await fetch(`/api/ticket?key=${encodeURIComponent(key)}`);
+    if (res.status === 404) {
+      status.style.background = '#F3F4F6';
+      status.style.color = '#6B7280';
+      status.textContent = 'ℹ️ Ticket not cached yet — fill in manually';
+      return;
+    }
+    if (!res.ok) throw new Error('Server error');
+    const d = await res.json();
+
+    // Auto-fill the IT form fields
+    const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+    set('firstName',     d.firstName);
+    set('lastName',      d.lastName);
+    set('personalEmail', d.email);
+    set('jobTitle',      d.jobTitle);
+    set('startDate',     d.startDate);
+    set('manager',       d.manager);
+
+    // Dropdowns — only set if value exists in the select
+    const setSelect = (id, val) => {
+      const el = document.getElementById(id);
+      if (!el || !val) return;
+      const opt = [...el.options].find(o => o.value === val || o.text === val);
+      if (opt) el.value = opt.value;
+    };
+    setSelect('empType',  d.empType);
+    setSelect('location', d.location);
+
+    // Hardware toggle
+    if (d.hardware) DEMO.hardwareRequested = true;
+
+    status.style.background = '#DCFCE7';
+    status.style.color = '#166534';
+    status.textContent = '✅ Auto-filled from ticket ' + key;
+  } catch (err) {
+    status.style.background = '#FEE2E2';
+    status.style.color = '#991B1B';
+    status.textContent = '⚠️ Could not load ticket — fill in manually';
+  }
+}
+
 function resetIT() {
   ['firstName','lastName','personalEmail','startDate','jobTitle','manager','managerEmail','itNotes']
     .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
@@ -1328,17 +1379,26 @@ function toggleDemoHardware() {
   if (currentMode === 'mgr') mgrGoTo(1);
 }
 
+let _ticketFetchTimer = null;
+
 function syncJiraKey() {
   const num = document.getElementById('jiraTicketNum').value.trim();
   const preview = document.getElementById('jiraKeyPreview');
   const full    = document.getElementById('jiraKeyFull');
+  const status  = document.getElementById('ticketFetchStatus');
+
   if (num) {
     DEMO.jiraKey = 'ITN-' + num;
     full.textContent = DEMO.jiraKey;
     preview.style.display = 'block';
+    // Debounce: wait 700ms after last keystroke before fetching
+    clearTimeout(_ticketFetchTimer);
+    _ticketFetchTimer = setTimeout(() => fetchTicketData(DEMO.jiraKey), 700);
   } else {
     DEMO.jiraKey = '';
     preview.style.display = 'none';
+    status.style.display = 'none';
+    clearTimeout(_ticketFetchTimer);
   }
 }
 
