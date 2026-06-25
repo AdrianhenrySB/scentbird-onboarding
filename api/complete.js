@@ -67,13 +67,14 @@ export default async function handler(req, res) {
       itNotes:     itData.notes || 'None'
     };
 
-    const jiraHeaders = { 'Content-Type': 'application/json' };
     const webhookSecret = process.env.JIRA_WEBHOOK_SECRET;
-    if (webhookSecret) jiraHeaders['x-automation-token'] = webhookSecret;
+    const finalUrl = webhookSecret
+      ? `${webhookUrl}${webhookUrl.includes('?') ? '&' : '?'}token=${encodeURIComponent(webhookSecret)}`
+      : webhookUrl;
 
-    const jiraRes = await fetch(webhookUrl, {
+    const jiraRes = await fetch(finalUrl, {
       method: 'POST',
-      headers: jiraHeaders,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(webhookPayload)
     });
 
